@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo de Usuarios</title>
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS (CDN para desarrollo) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body class="bg-pink-50 text-gray-800 min-h-screen flex flex-col">
   <!-- Header -->
@@ -21,6 +21,7 @@
         <li><a href="#acerca" class="hover:text-pink-800">Acerca de</a></li>
       </ul>
       <button id="menu-btn" class="md:hidden p-2 rounded bg-pink-600 text-white">
+        <!-- Icono hamburguesa -->
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -38,9 +39,8 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="flex-grow container mx-auto px-6 py-10 space-y-16">
-    <!-- Sección Inicio -->
+    <!-- Inicio -->
     <section id="inicio" class="text-center">
       <h2 class="text-4xl font-bold text-pink-600 mb-4">Bienvenida</h2>
       <p class="text-lg text-gray-700 max-w-2xl mx-auto">
@@ -48,43 +48,42 @@
       </p>
     </section>
 
-    <!-- Sección Catálogo -->
+    <!-- Catálogo -->
     <section id="catalogo">
       <h2 class="text-3xl font-semibold text-orange-700 mb-6">Catálogo de Usuarios</h2>
       <div id="catalogo-content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Cards de usuarios generadas por XSLT -->
+        <!-- Generado por XSLT -->
       </div>
     </section>
 
-    <!-- Sección Consultas -->
+    <!-- Consultas -->
     <section id="consultas">
       <h2 class="text-3xl font-semibold text-orange-700 mb-6">Consultas XQuery</h2>
       <div id="consulta-result" class="bg-white p-6 rounded-lg shadow-lg whitespace-pre-wrap"></div>
     </section>
 
-    <!-- Sección Validación -->
+    <!-- Validación -->
     <section id="validacion">
-      <h2 class="text-3xl font-semibold text-orange-700 mb-6">Resultado Validación XML</h2>
+      <h2 class="text-3xl font-semibold text-orange-700 mb-6">Validación XML</h2>
       <div id="validacion-log" class="bg-white p-6 rounded-lg shadow-lg font-mono text-sm"></div>
     </section>
 
-    <!-- Sección Acerca de -->
+    <!-- Acerca de -->
     <section id="acerca">
       <h2 class="text-3xl font-semibold text-orange-700 mb-4">Acerca de este Proyecto</h2>
       <ul class="list-disc list-inside text-gray-700 space-y-2">
-        <li>Interfaz web profesional con HTML5, CSS3 y TailwindCSS.</li>
-        <li>Datos en XML validados por DTD y XSD.</li>
-        <li>Transformación de datos con XSLT y renderizado dinámico.</li>
-        <li>Consultas XPath y XQuery servidas por BaseX online.</li>
-        <li>Diseño responsive y accesible para móviles y escritorio.</li>
+        <li>Interfaz profesional con HTML5, CSS3 y TailwindCSS.</li>
+        <li>XML de usuarios validado con DTD y XSD.</li>
+        <li>XSLT para generar HTML dinámico.</li>
+        <li>Consultas XPath/XQuery en BaseX online.</li>
+        <li>Diseño responsive y accesible.</li>
       </ul>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="bg-orange-100 py-6">
     <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
-      <p class="text-gray-600">&copy; 2025 UsuariosXML. Todos los derechos reservados.</p>
+      <p class="text-gray-600">&copy; 2025 UsuariosXML.</p>
       <div class="flex space-x-4 mt-4 md:mt-0">
         <a href="#inicio" class="text-gray-600 hover:text-pink-600">Inicio</a>
         <a href="#catalogo" class="text-gray-600 hover:text-pink-600">Catálogo</a>
@@ -92,8 +91,5 @@
       </div>
     </div>
   </footer>
-
-  <!-- JS -->
-  <script src="js/app.js"></script>
 </body>
 </html>
