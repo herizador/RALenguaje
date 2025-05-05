@@ -1,8 +1,0 @@
-<!ELEMENT catalogo (producto+)>
-<!ELEMENT producto (nombre, categoria, precio, stock)>
-<!ATTLIST producto id ID #REQUIRED>
-<!ELEMENT nombre (#PCDATA)>
-<!ELEMENT categoria (#PCDATA)>
-<!ELEMENT precio (#PCDATA)>
-<!ATTLIST precio moneda CDATA #REQUIRED>
-<!ELEMENT stock (#PCDATA)>
