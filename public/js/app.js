@@ -1,14 +1,21 @@
-// Reemplaza con tu URL real de Render para BaseX:
-const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com';
+(async ()=>{
+  // Carga y transforma el XML con XSLT:
+  const [xml, xsl] = await Promise.all([
+    fetch('data/catalogo.xml').then(r=>r.text()),
+    fetch('xsl/transformar.xsl').then(r=>r.text())
+  ]);
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xml,'application/xml');
+  const xslDoc = parser.parseFromString(xsl,'application/xml');
+  const proc = new XSLTProcessor();
+  proc.importStylesheet(xslDoc);
+  document.getElementById('content')
+          .appendChild(proc.transformToFragment(xmlDoc, document));
 
-// Ejemplo: ejecutar XQuery remoto
-async function runXQuery(path) {
-  const res = await fetch(`${BASEX_URL}/rest/basex/xquery/${path}`);
-  if (!res.ok) throw new Error('Error en XQuery: ' + res.status);
-  return await res.text();
-}
-
-// Uso:
-runXQuery('buscar.xq')
-  .then(txt => console.log(txt))
-  .catch(err => console.error(err));
+  // Ejemplo de llamada XQuery a BaseX (ajusta la URL después del deploy):
+  /*
+  const res = await fetch('https://<tu-baseurl>/rest/basex/xquery/buscar.xq');
+  const text = await res.text();
+  console.log(text);
+  */
+})();
