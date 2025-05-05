@@ -1,3 +1,6 @@
+// Define la URL de tu servicio BaseX en Render:
+const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com'; // Reemplaza <TU_SERVICIO> por la URL que Render te proporciona
+
 // Toggle menú móvil
 document.getElementById('menu-btn').addEventListener('click', () => {
   document.getElementById('mobile-menu').classList.toggle('hidden');
@@ -24,9 +27,10 @@ async function loadCatalog() {
 }
 
 // Ejecuta una consulta XQuery remota en BaseX
-tasync function runConsulta() {
+async function runConsulta() {
   try {
-    const res = await fetch('https://TU_BASEX_URL/rest/usuarios/xquery/consulta.xq');
+    const res = await fetch(`${BASEX_URL}/rest/usuarios/xquery/consulta.xq`);
+    if (!res.ok) throw new Error(res.statusText);
     const text = await res.text();
     document.getElementById('consulta-result').textContent = text;
   } catch (err) {
@@ -38,7 +42,8 @@ tasync function runConsulta() {
 // Simula validación XML (se puede sustituir por llamada real a REST si se implementa)
 function runValidacion() {
   const log = document.getElementById('validacion-log');
-  log.textContent = '✓ Validación DTD: OK\n✓ Validación XSD: OK';
+  log.textContent = '✓ Validación DTD: OK
+✓ Validación XSD: OK';
 }
 
 // Inicialización
