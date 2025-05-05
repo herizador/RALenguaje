@@ -26,9 +26,11 @@ document.getElementById('menu-btn').addEventListener('click', () => {
 }
 
 // XQuery: peticiones a BaseX
+const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com';
+
 async function runConsulta() {
   try {
-    const res = await fetch(`${BASEX_URL}/rest/usuarios/xquery/buscar.xq`);
+    const res = await fetch(`${BASEX_URL}/rest/usuarios?run=buscar.xq`);
     if (!res.ok) throw new Error(res.statusText);
     const txt = await res.text();
     document.getElementById('consulta-result').textContent = txt;
