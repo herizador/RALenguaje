@@ -1,5 +1,5 @@
-FROM basex/basex:latest
-# Copiamos los datos XML al directorio interno de BaseX
-COPY ../../data /opt/basex/data
+FROM basex/basexhttp:latest    # imagen oficial BaseX HTTP :contentReference[oaicite:0]{index=0}
+# Copiamos el directorio completo data/ al volumen de BaseX
+COPY data /opt/basex/data
 EXPOSE 8984 1984
-# El contenedor arrancará el servidor HTTP de BaseX por defecto
+# La imagen arranca el servidor HTTP de BaseX por defecto
