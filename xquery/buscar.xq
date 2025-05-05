@@ -7,3 +7,4 @@ return
     <nombre>{ $p/nombre }</nombre>
     <stock>{ $p/stock }</stock>
   </item>
+
