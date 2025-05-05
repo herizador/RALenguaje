@@ -1,1 +1,17 @@
-body { font-family: sans-serif; padding: 1rem; }
+/* Archivo de estilos adicionales */
+
+/* Habilita smooth scroll en toda la página */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Sombras personalizadas para tarjetas */
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Efecto hover para tarjetas */
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  transition: transform 0.2s ease-in-out;
+}
