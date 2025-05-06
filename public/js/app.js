@@ -2,10 +2,6 @@
 
 const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com'; // (aunque ahora dejemos BaseX)
 
-document.getElementById('menu-btn').addEventListener('click', () => {
-  document.getElementById('mobile-menu').classList.toggle('hidden');
-});
-
 // Carga y transformación XSLT para el catálogo de productos
 async function loadCatalog() {
   try {
