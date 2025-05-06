@@ -44,6 +44,16 @@ function runValidacion() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Sólo si existe el botón, se añade el listener
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+
+  // Resto de tu inicialización
   loadCatalog();
   runValidacion();
 });
