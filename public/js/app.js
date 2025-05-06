@@ -47,18 +47,27 @@ async function runConsulta() {
     const qRes = await fetch('/xquery/buscar.xq');
     const query = await qRes.text();
 
-    // 2) Envía la consulta a BaseX vía GET ?query=
+    // 2) Construye la cabecera Basic Auth
+    const credentials = btoa('admin:admin');
+
+    // 3) Envía la consulta a BaseX vía GET ?query= con auth
     const res = await fetch(
-      `${BASEX_URL}/rest/usuarios?query=${encodeURIComponent(query)}`
+      `${BASEX_URL}/rest/usuarios?query=${encodeURIComponent(query)}`,
+      {
+        headers: {
+          'Authorization': `Basic ${credentials}`
+        },
+        mode: 'cors'
+      }
     );
-    if (!res.ok) throw new Error(res.statusText);
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 
     const text = await res.text();
     out.textContent = text;
 
   } catch (e) {
     console.error('Error en consulta XQuery:', e);
-    out.textContent = '❌ Error al ejecutar la consulta.';
+    out.textContent = `❌ Error al ejecutar la consulta: ${e.message}`;
   }
 }
 
