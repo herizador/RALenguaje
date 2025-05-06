@@ -39,6 +39,29 @@ function runValidacion() {
     '✓ Validación DTD: OK\n✓ Validación XSD: OK';
 }
 
+async function runConsulta() {
+  const out = document.getElementById('consulta-content');
+  out.textContent = '⏳ Ejecutando consulta...';
+  try {
+    // 1) Carga el XQuery desde tu carpeta pública
+    const qRes = await fetch('/xquery/buscar.xq');
+    const query = await qRes.text();
+
+    // 2) Envía la consulta a BaseX vía GET ?query=
+    const res = await fetch(
+      `${BASEX_URL}/rest/usuarios?query=${encodeURIComponent(query)}`
+    );
+    if (!res.ok) throw new Error(res.statusText);
+
+    const text = await res.text();
+    out.textContent = text;
+
+  } catch (e) {
+    console.error('Error en consulta XQuery:', e);
+    out.textContent = '❌ Error al ejecutar la consulta.';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Sólo si existe el botón, se añade el listener
   const menuBtn = document.getElementById('menu-btn');
@@ -52,4 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Resto de tu inicialización
   loadCatalog();
   runValidacion();
+
+  const btn = document.getElementById('btn-consulta');
+  if (btn) btn.addEventListener('click', runConsulta);
 });
