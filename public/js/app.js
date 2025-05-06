@@ -44,11 +44,22 @@ async function loadCatalog() {
 
 // 3) Función que inyecta la consulta XQuery en el iframe
 async function runConsulta() {
-  const qRes = await fetch('/xquery/buscar.xq');
-  const query = await qRes.text();
-  const frame = document.getElementById('consulta-frame');
-  if (frame) {
-    frame.src = `/rest/db/usuarios?query=${encodeURIComponent(query)}`;
+  try {
+    const qRes = await fetch('/xquery/buscar.xq');
+    const query = await qRes.text();
+
+    const res = await fetch(`/rest/db/usuarios?query=${encodeURIComponent(query)}`, {
+      headers: {
+        Authorization: 'Basic ' + btoa('admin:admin') // Cambia si usas otra auth
+      }
+    });
+
+    if (!res.ok) throw new Error('Error: ' + res.status);
+
+    const xmlText = await res.text();
+    document.getElementById('resultado').textContent = xmlText;
+  } catch (err) {
+    console.error('Error en consulta XQuery:', err.message);
   }
 }
 
