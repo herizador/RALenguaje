@@ -1,4 +1,3 @@
-(: Ejemplo: listar todos los usuarios :)
 for $u in doc("catalogo.xml")/catalogo/producto
 return
   <item>
