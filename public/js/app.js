@@ -40,7 +40,6 @@ function runValidacion() {
 }
 
 async function runConsulta() {
-async function runConsulta() {
   const out = document.getElementById('consulta-content');
   out.textContent = '⏳ Ejecutando consulta…';
   try {
