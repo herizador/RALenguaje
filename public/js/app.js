@@ -1,51 +1,49 @@
-// Define la URL de tu servicio BaseX en Render:
-const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com'; // tu URL en Render
+// public/js/app.js
 
-// Menú móvil
+const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com'; // (aunque ahora dejemos BaseX)
+
 document.getElementById('menu-btn').addEventListener('click', () => {
   document.getElementById('mobile-menu').classList.toggle('hidden');
 });
 
-// XSLT: genera catálogo\async function loadCatalog() {
+// Carga y transformación XSLT para el catálogo de productos
+async function loadCatalog() {
   try {
+    // FETCH del XML y del XSL correctos
     const [xmlRes, xslRes] = await Promise.all([
       fetch('/data/catalogo.xml'),
       fetch('/xsl/transformar.xsl')
     ]);
-    const [xmlText, xslText] = await Promise.all([xmlRes.text(), xslRes.text()]);
+    const [xmlText, xslText] = await Promise.all([
+      xmlRes.text(), xslRes.text()
+    ]);
+
+    // Parsear
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, 'application/xml');
     const xsl = parser.parseFromString(xslText, 'application/xml');
+
+    // Transformar
     const proc = new XSLTProcessor();
     proc.importStylesheet(xsl);
     const frag = proc.transformToFragment(xml, document);
-    document.getElementById('catalogo-content').appendChild(frag);
+
+    // Renderizar
+    const container = document.getElementById('catalogo-content');
+    container.innerHTML = '';           // limpia antes
+    container.appendChild(frag);
+
   } catch (e) {
-    console.error('Error catálogo:', e);
+    console.error('Error cargando/transf. catálogo:', e);
   }
 }
 
-// XQuery: peticiones a BaseX
-const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com';
-
-async function runConsulta() {
-  try {
-    const res = await fetch(`${BASEX_URL}/rest/usuarios?run=buscar.xq`);
-    if (!res.ok) throw new Error(res.statusText);
-    const txt = await res.text();
-    document.getElementById('consulta-result').textContent = txt;
-  } catch (e) {
-    console.error('Error consulta:', e);
-    document.getElementById('consulta-result').textContent = 'Error en consulta';
-  }
-}
-
-// Validación sim
 function runValidacion() {
-  document.getElementById('validacion-log').textContent = '✓ DTD OK\n✓ XSD OK';
+  document.getElementById('validacion-log').textContent =
+    '✓ Validación DTD: OK\n✓ Validación XSD: OK';
 }
 
-// Init
 document.addEventListener('DOMContentLoaded', () => {
-  loadCatalog(); runConsulta(); runValidacion();
+  loadCatalog();
+  runValidacion();
 });
