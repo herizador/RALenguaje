@@ -1,8 +1,9 @@
-# Imagen oficial de BaseX con HTTP REST
 FROM basex/basexhttp:latest
 
-# Copiamos el directorio data/ dentro del contenedor
+# Copiamos los datos XML
 COPY public/data /opt/basex/data
 
-# Exponemos los puertos de BaseX: 8984 (REST) y 1984 (GUI)
+# Copiamos el web.xml custom con CORS al WEB-INF de BaseX
+COPY server/basex/web.xml /srv/basex/webapp/WEB-INF/web.xml
+
 EXPOSE 8984 1984
