@@ -40,8 +40,9 @@ function runValidacion() {
 }
 
 async function runConsulta() {
+async function runConsulta() {
   const out = document.getElementById('consulta-content');
-  out.textContent = '⏳ Ejecutando consulta...';
+  out.textContent = '⏳ Ejecutando consulta…';
   try {
     // 1) Carga el XQuery desde tu carpeta pública
     const qRes = await fetch('/xquery/buscar.xq');
@@ -50,9 +51,9 @@ async function runConsulta() {
     // 2) Construye la cabecera Basic Auth
     const credentials = btoa('admin:admin');
 
-    // 3) Envía la consulta a BaseX vía GET ?query= con auth
+    // 3) Envía la consulta al endpoint CORRECTO: /rest/db/usuarios
     const res = await fetch(
-      `${BASEX_URL}/rest/usuarios?query=${encodeURIComponent(query)}`,
+      `${BASEX_URL}/rest/db/usuarios?query=${encodeURIComponent(query)}`,
       {
         headers: {
           'Authorization': `Basic ${credentials}`
@@ -63,7 +64,7 @@ async function runConsulta() {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 
     const text = await res.text();
-    out.textContent = text;
+    out.textContent = text.trim() || '⚠️ Sin resultados';
 
   } catch (e) {
     console.error('Error en consulta XQuery:', e);
@@ -85,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCatalog();
   runValidacion();
 
-  const btn = document.getElementById('btn-consulta');
-  if (btn) btn.addEventListener('click', runConsulta);
+  const btnConsulta = document.getElementById('btn-consulta');
+  if (btnConsulta) {
+    btnConsulta.addEventListener('click', runConsulta);
+  }
 });
