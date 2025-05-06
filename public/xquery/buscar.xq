@@ -1,10 +1,8 @@
-(: Productos con stock < 100 :)
-for $p in doc("data/catalogo.xml")/catalogo/producto
-where $p/stock < 100
-return 
+(: Ejemplo: listar todos los usuarios :)
+for $u in doc("catalogo.xml")/catalogo/producto
+return
   <item>
-    <id>{ $p/@id }</id>
-    <nombre>{ $p/nombre }</nombre>
-    <stock>{ $p/stock }</stock>
+    <id>{ $u/@id }</id>
+    <nombre>{ $u/nombre/text() }</nombre>
+    <stock>{ $u/stock/text() }</stock>
   </item>
-
