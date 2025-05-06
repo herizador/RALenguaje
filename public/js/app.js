@@ -58,8 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCatalog();
   runValidacion();
 
-  const btnConsulta = document.getElementById('btn-consulta');
-  if (btnConsulta) {
-    btnConsulta.addEventListener('click', runConsulta);
-  }
+  const btn = document.getElementById('btn-consulta');
+  if (btn) btn.addEventListener('click', runConsulta);
 });
