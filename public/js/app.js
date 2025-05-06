@@ -34,41 +34,14 @@ async function loadCatalog() {
   }
 }
 
-function runValidacion() {
-  document.getElementById('validacion-log').textContent =
-    '✓ Validación DTD: OK\n✓ Validación XSD: OK';
-}
-
 async function runConsulta() {
-  const out = document.getElementById('consulta-content');
-  out.textContent = '⏳ Ejecutando consulta…';
-  try {
-    // 1) Carga el XQuery desde tu carpeta pública
-    const qRes = await fetch('/xquery/buscar.xq');
-    const query = await qRes.text();
-
-    // 2) Construye la cabecera Basic Auth
-    const credentials = btoa('admin:admin');
-
-    // 3) Envía la consulta al endpoint CORRECTO: /rest/db/usuarios
-    const res = await fetch(
-      `${BASEX_URL}/rest/db/usuarios?query=${encodeURIComponent(query)}`,
-      {
-        headers: {
-          'Authorization': `Basic ${credentials}`
-        },
-        mode: 'cors'
-      }
-    );
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-
-    const text = await res.text();
-    out.textContent = text.trim() || '⚠️ Sin resultados';
-
-  } catch (e) {
-    console.error('Error en consulta XQuery:', e);
-    out.textContent = `❌ Error al ejecutar la consulta: ${e.message}`;
-  }
+  const frame = document.getElementById('consulta-frame');
+  // Carga la consulta XQuery
+  const qRes = await fetch('/xquery/buscar.xq');
+  const query = await qRes.text();
+  // Monta la URL escapando el query
+  const url = `/rest/db/usuarios?query=${encodeURIComponent(query)}`;
+  frame.src = url;      // el navegador carga el contenido sin CORS
 }
 
 document.addEventListener('DOMContentLoaded', () => {
