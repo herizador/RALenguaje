@@ -48,18 +48,12 @@ async function runConsulta() {
     const qRes = await fetch('/xquery/buscar.xq');
     const query = await qRes.text();
 
-    const res = await fetch(`/rest/db/usuarios?query=${encodeURIComponent(query)}`, {
-      headers: {
-        Authorization: 'Basic ' + btoa('admin:admin') // Cambia si usas otra auth
-      }
-    });
-
-    if (!res.ok) throw new Error('Error: ' + res.status);
-
-    const xmlText = await res.text();
-    document.getElementById('resultado').textContent = xmlText;
+    const frame = document.getElementById('consulta-frame');
+    if (frame) {
+      frame.src = `/rest/db/usuarios?query=${encodeURIComponent(query)}`;
+    }
   } catch (err) {
-    console.error('Error en consulta XQuery:', err.message);
+    console.error('Error en runConsulta:', err.message);
   }
 }
 
@@ -79,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
   runValidacion();
 
   // Enlaza botón de consulta
-  const btnConsulta = document.getElementById('btn-consulta');
-  if (btnConsulta) {
-    btnConsulta.addEventListener('click', runConsulta);
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('btn-consulta');
+  btn.addEventListener('click', runConsulta);
+  });
 });
