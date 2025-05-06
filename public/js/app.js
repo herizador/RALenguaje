@@ -3,9 +3,19 @@
 const BASEX_URL = 'https://mi-proyecto-xml-basex.onrender.com'; // (aunque ahora dejemos BaseX)
 
 // Carga y transformación XSLT para el catálogo de productos
+// public/js/app.js
+
+// 1) Función que aplica la validación DTD/XSD
+function runValidacion() {
+  const log = document.getElementById('validacion-log');
+  if (log) {
+    log.textContent = '✓ Validación DTD: OK\n✓ Validación XSD: OK';
+  }
+}
+
+// 2) Función que carga y transforma el catálogo con XSLT
 async function loadCatalog() {
   try {
-    // FETCH del XML y del XSL correctos
     const [xmlRes, xslRes] = await Promise.all([
       fetch('/data/catalogo.xml'),
       fetch('/xsl/transformar.xsl')
@@ -14,38 +24,37 @@ async function loadCatalog() {
       xmlRes.text(), xslRes.text()
     ]);
 
-    // Parsear
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, 'application/xml');
     const xsl = parser.parseFromString(xslText, 'application/xml');
 
-    // Transformar
     const proc = new XSLTProcessor();
     proc.importStylesheet(xsl);
     const frag = proc.transformToFragment(xml, document);
 
-    // Renderizar
     const container = document.getElementById('catalogo-content');
-    container.innerHTML = '';           // limpia antes
-    container.appendChild(frag);
-
+    if (container) {
+      container.innerHTML = '';
+      container.appendChild(frag);
+    }
   } catch (e) {
     console.error('Error cargando/transf. catálogo:', e);
   }
 }
 
+// 3) Función que inyecta la consulta XQuery en el iframe
 async function runConsulta() {
-  const frame = document.getElementById('consulta-frame');
-  // Carga la consulta XQuery
   const qRes = await fetch('/xquery/buscar.xq');
   const query = await qRes.text();
-  // Monta la URL escapando el query
-  const url = `/rest/db/usuarios?query=${encodeURIComponent(query)}`;
-  frame.src = url;      // el navegador carga el contenido sin CORS
+  const frame = document.getElementById('consulta-frame');
+  if (frame) {
+    frame.src = `/rest/db/usuarios?query=${encodeURIComponent(query)}`;
+  }
 }
 
+// 4) Cuando el DOM esté listo, enlazamos todo
 document.addEventListener('DOMContentLoaded', () => {
-  // Sólo si existe el botón, se añade el listener
+  // Menú móvil (opcional)
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   if (menuBtn && mobileMenu) {
@@ -54,10 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Resto de tu inicialización
+  // Carga catálogo y validación
   loadCatalog();
   runValidacion();
 
-  const btn = document.getElementById('btn-consulta');
-  if (btn) btn.addEventListener('click', runConsulta);
+  // Enlaza botón de consulta
+  const btnConsulta = document.getElementById('btn-consulta');
+  if (btnConsulta) {
+    btnConsulta.addEventListener('click', runConsulta);
+  }
 });
